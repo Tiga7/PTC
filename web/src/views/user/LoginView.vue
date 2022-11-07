@@ -1,6 +1,6 @@
 <template>
     <CardViewVue>
-        <div class="show-login" v-if="$store.state.user.sno === ''">
+        <div class="show-login">
             <Login @on-submit="login">
                 <UserName name="sno" maxlength="9" placeholder="请输入学号" />
                 <Password name="password" maxlength="13" placeholder="请输入密码" />
@@ -33,6 +33,7 @@ export default {
     },
     setup() {
         const store = useStore();
+        store;
         const error_message = ref('');
         let captcha = ref("");
         const get_new_captcha = () => {
@@ -40,6 +41,8 @@ export default {
             // captcha.value = Math.floor(Math.random() * (999999 - 100000)) + 100000;
         }
         get_new_captcha()
+
+
 
         const login = (valid, { sno, password, enter_captcha }) => {
 
@@ -50,23 +53,16 @@ export default {
                         sno,
                         password,
                         success() {
+                            router.push({ name: "home" })
                             store.dispatch("getinfo",
                                 {
                                     success() {
                                         router.push({ name: "home" })
                                     },
-                                    error() {
-                                        router.push({ name: "login_index" });
-                                    }
-
                                 });
                         },
-                        error(data) {
-                            if (data.result === 'failed') {
-                                error_message.value = "用户未激活";
-                            } else {
-                                error_message.value = "账号密码错误";
-                            }
+                        error(error) {
+                            error_message.value = error.message;
                             // console.log(resp)
                         }
                     })

@@ -1,6 +1,6 @@
 <template>
     <CardViewVue>
-        404
+        <Exception type="404" />
     </CardViewVue>
 </template>
 

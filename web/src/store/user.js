@@ -1,4 +1,8 @@
-import $ from "jquery";
+import { get_info_api, login_api } from "@/request/api";
+
+// import { Message } from "view-ui-plus";
+// import axios from "axios";
+// import qs from "qs";
 
 export default {
 	state: {
@@ -43,55 +47,78 @@ export default {
 	actions: {
 		//第一个参数可以调用mutations里的方法   第二个参数是传入的参数
 		login(context, data) {
-			$.ajax({
-				url: "http://127.0.0.1:3030/api/user/token/",
-				type: "post",
-				data: {
-					sno: data.sno,
-					password: data.password,
-				},
-				success(resp) {
-					if (resp.code == 1000) {
-						if (resp.data.result == "success") {
-							localStorage.setItem("jwt_token", resp.data.token);
-							context.commit("updateToken", resp.data.token);
-							//回调data里的函数
-							data.success(resp.data);
-						} else {
-							data.error(resp.data);
-						}
+			login_api({
+				sno: data.sno,
+				password: data.password,
+			})
+				.then(function (response) {
+					if (response.code == 200) {
+						// console.log(response);
+						localStorage.setItem("jwt_token", response.data.token);
+						context.commit("updateToken", response.data.token);
+						data.success(response);
 					} else {
-						data.error(resp);
+						data.error(response);
 					}
-				},
-				error(resp) {
-					data.error(resp);
-				},
-			});
+				})
+				.catch(function (error) {
+					data.error(error);
+				});
+
+			// axios({
+			// 	method: "post",
+			// 	url: "http://localhost:3030/api/user/token/",
+			// 	headers: { "Content-Type": "application/x-www-form-urlencoded" },
+			// 	data: qs.stringify({
+			// 		sno: data.sno,
+			// 		password: data.password,
+			// 	}),
+			// }).then(function (response) {
+			// 	console.log(response);
+			// 	if (response.data.code == 200) {
+			// 		localStorage.setItem("jwt_token", response.data.data.token);
+			// 		context.commit("updateToken", response.data.data.token);
+			// 		data.success(response);
+			// 	} else {
+			// 		data.error(response);
+			// 	}
+			// });
 		},
 		getinfo(context, data) {
-			$.ajax({
-				url: "http://localhost:3030/api/user/info/",
-				type: "get",
-				headers: {
-					Authorization: "Bearer " + context.state.token,
-				},
-				success(resp) {
-					if (resp.code == 1000) {
+			get_info_api()
+				.then(function (response) {
+					if (response.code == 200) {
 						context.commit("updateUser", {
-							...resp.data,
+							...response.data,
 							is_login: true,
-							is_admin: resp.data.isAdmin == 1 ? true : false,
+							is_admin: response.data.isAdmin == 1 ? true : false,
 						});
-						data.success(resp);
+						data.success(response);
 					} else {
-						data.error(resp);
+						data.error(response);
 					}
-				},
-				error(resp) {
-					data.error(resp);
-				},
-			});
+				})
+				.catch(function (error) {
+					data.error(error);
+				});
+			// axios({
+			// 	url: "http://localhost:3030/api/user/info/",
+			// 	method: "post",
+			// 	headers: {
+			// 		Authorization: "Bearer " + context.state.token,
+			// 	},
+			// }).then(function (response) {
+			// 	if (response.code == 200) {
+			// 		context.commit("updateUser", {
+			// 			...response.data,
+			// 			is_login: true,
+			// 			is_admin: response.data.isAdmin == 1 ? true : false,
+			// 		});
+			// 		data.success(response);
+			// 	} else {
+			// 		data.error(response);
+			// 	}
+			// });
 		},
 		logout(context) {
 			localStorage.removeItem("jwt_token");

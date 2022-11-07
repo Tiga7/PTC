@@ -4,6 +4,11 @@
         </Col>
         <Col span="20">
         <Menu mode="horizontal" theme="light" :open-names="['1']" accordion>
+
+            <MenuItem name="6" to="/home">
+            <Icon type="md-checkmark" />
+            HOME
+            </MenuItem>
             <MenuItem name="1" to="/collection/">
             <Icon type="ios-paper" />
             收藏
@@ -24,20 +29,21 @@
             <Icon type="ios-stats" />
             自习室
             </MenuItem>
-            <MenuItem name="2-1" to="/user/login">登录</MenuItem>
-            <MenuItem name="2-2" to="/user/register">注册</MenuItem>
-            <Submenu name="2" style="float: right;" v-if="$store.state.user.loading_info_over">
+            <Submenu name="2" style="float: right;" v-if="$store.state.user.sno !== ''">
                 <template #title>
                     <Icon type="md-person" />
                     {{ $store.state.user.sno }}
                 </template>
-                <MenuItem name="2-2" @click="logout">退出</MenuItem>
+                <MenuItem name="2-3" to="/user/info/">个人信息</MenuItem>
+                <MenuItem name="2-4" @click="logout">退出</MenuItem>
             </Submenu>
             <Submenu name="2" style="float: right;" v-else>
                 <template #title>
                     <Icon type="md-person" />用户管理
                 </template>
-                <MenuItem name="2-2" @click="logout">退出</MenuItem>
+                <MenuItem name="2-1" to="/user/login">登录</MenuItem>
+                <MenuItem name="2-2" to="/user/register">注册</MenuItem>
+
             </Submenu>
         </Menu>
         </Col>
@@ -49,14 +55,19 @@
 <script>
 import { ref } from 'vue'
 import { useStore } from 'vuex'
-import router from '@/router/index';
-
+import router from '@/router';
 export default {
     components: {
 
     },
     setup() {
         const store = useStore();
+        const cc = ref(1)
+        const activeIndex = ref('1')
+        const handleSelect = () => {
+            cc.value++;
+        }
+
         const token = localStorage.getItem("jwt_token");
         if (token) {
             store.commit("updateToken", token);
@@ -66,17 +77,12 @@ export default {
                     store.commit("updataLoadingOver", true)
                 },
                 error() {
-                    store.commit("updataLoadingOver", true)
+                    store.commit("updataLoadingOver", false)
                     // router.push({ name: "login_index" });
                 }
             })
         } else {
-            store.commit("updataLoadingOver", true)
-        }
-        const cc = ref(1)
-        const activeIndex = ref('1')
-        const handleSelect = () => {
-            cc.value++;
+            store.commit("updataLoadingOver", false)
         }
 
         const logout = () => {

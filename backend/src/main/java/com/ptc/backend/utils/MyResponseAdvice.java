@@ -1,4 +1,4 @@
-package com.ptc.backend.config.resp;
+package com.ptc.backend.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,27 +11,29 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 @RestControllerAdvice(basePackages = {"com.ptc.backend"})
-public class ControllerResponseAdvice implements ResponseBodyAdvice<Object> {
+public class MyResponseAdvice implements ResponseBodyAdvice<Object> {
     @Override
     public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass) {
-        // response是ResultVo类型，或者注释了NotControllerResponseAdvice都不进行包装
-        return !methodParameter.getParameterType().isAssignableFrom(RespVo.class);
+        // response是ResultData类型，或者注释了NotControllerResponseAdvice都不进行包装
+        return !methodParameter.getParameterType().isAssignableFrom(ResultData.class);
+
     }
 
     @Override
-    public Object beforeBodyWrite(Object data, MethodParameter returnType, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest request, ServerHttpResponse response) {
-        // String类型不能直接包装
+    public Object beforeBodyWrite(Object o, MethodParameter returnType, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest request, ServerHttpResponse response) {
 
+        // String类型不能直接包装
         if (returnType.getGenericParameterType().equals(String.class)) {
             ObjectMapper objectMapper = new ObjectMapper();
             try {
-                // 将数据包装在ResultVo里后转换为json串进行返回
-                return objectMapper.writeValueAsString(new RespVo(data));
+                // 将数据包装在ResultData里后转换为json串进行返回
+                return objectMapper.writeValueAsString(ResultData.success(o));
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
         }
-        // 否则直接包装成ResultVo返回
-        return new RespVo(data);
+
+        // 否则直接包装成ResultData返回
+        return ResultData.success(o);
     }
 }

@@ -1,9 +1,7 @@
 package com.ptc.backend.service.impl;
 
-import com.ptc.backend.config.resp.RespCode;
-import com.ptc.backend.config.resp.RespVo;
-import com.ptc.backend.service.impl.userutils.UserDetailsImpl;
 import com.ptc.backend.pojo.OrdinaryUser;
+import com.ptc.backend.service.impl.userutils.UserDetailsImpl;
 import com.ptc.backend.service.user.InfoService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

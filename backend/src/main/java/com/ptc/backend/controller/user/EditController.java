@@ -1,6 +1,6 @@
 package com.ptc.backend.controller.user;
 
-import com.ptc.backend.config.resp.RespVo;
+
 import com.ptc.backend.service.user.EditService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +16,8 @@ public class EditController {
     private EditService editService;
 
     @PostMapping("/api/user/edit/")
-    public RespVo editUser(@RequestParam Map<String,String> data){
+    public Map<String,String> editUser(@RequestParam Map<String,String> data){
+
         return editService.editUser(data.get("sno"),data.get("password"));
     }
 }

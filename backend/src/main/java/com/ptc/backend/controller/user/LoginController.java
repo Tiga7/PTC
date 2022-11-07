@@ -2,6 +2,7 @@ package com.ptc.backend.controller.user;
 
 import com.ptc.backend.pojo.OrdinaryUser;
 import com.ptc.backend.service.user.LoginService;
+import com.ptc.backend.utils.ResultData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,13 +15,12 @@ public class LoginController {
     private LoginService loginService;
 
     @PostMapping("/api/user/token/")
-    public Map<String, String> getToken(@RequestParam Map<String, String> map) {
+    public ResultData<Map<String,String>> getToken(@RequestParam Map<String, String> data) {
 
-        String sno = map.get("sno");
-        String password = map.get("password");
+        String sno = data.get("sno");
+        String password = data.get("password");
 
-        return loginService.getToken(sno,password);
+        return loginService.getToken(sno, password);
     }
-
 
 }

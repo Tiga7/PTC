@@ -45,6 +45,15 @@ const routes = [
 		},
 	},
 	{
+		path: "/user/info/",
+		name: "info_index",
+		component: () => import("../views/user/InfoView.vue"),
+		meta: {
+			is_admin: false,
+			requestAuth: true,
+		},
+	},
+	{
 		path: "/collection/",
 		name: "collection_index",
 		component: () => import("../views/collection/CollectionView.vue"),

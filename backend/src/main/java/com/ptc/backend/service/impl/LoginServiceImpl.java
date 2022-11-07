@@ -4,6 +4,8 @@ import com.ptc.backend.config.filters.JwtUtil;
 import com.ptc.backend.pojo.OrdinaryUser;
 import com.ptc.backend.service.impl.userutils.UserDetailsImpl;
 import com.ptc.backend.service.user.LoginService;
+import com.ptc.backend.utils.ResultData;
+import com.ptc.backend.utils.ReturnCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 @Component
 @Service
@@ -23,7 +26,7 @@ public class LoginServiceImpl implements LoginService {
     private AuthenticationManager authenticationManager;
 
     @Override
-    public Map<String, String> getToken(String sno, String password) {
+    public ResultData<Map<String,String>> getToken(String sno, String password) {
 
         //将username password 转成密文
         UsernamePasswordAuthenticationToken authenticationToken =
@@ -35,21 +38,17 @@ public class LoginServiceImpl implements LoginService {
         UserDetailsImpl loginUser = (UserDetailsImpl) authenticate.getPrincipal();
 
         OrdinaryUser user = loginUser.getUser();
-        Map<String, String> map = new HashMap<>();
 
-        if  (user.getModifyTime().isBefore(LocalDateTime.of(2022,11,1,0,0,0)))
-        {
-            map.put("result", "failed");
-            map.put("error_massage", "account unactivated !");
-            return map;
+        final LocalDateTime baseTime = LocalDateTime.of(2022, 11, 1, 0, 0, 0);
+
+        if (user.getModifyTime().isAfter(baseTime)) {
+            //封装userid的信息到token里
+            String jwt = JwtUtil.createJWT(user.getId().toString());
+            Map<String, String> data = new HashMap<>();
+            data.put("token",jwt);
+            return ResultData.success(data);
+        } else {
+            return ResultData.fail(ReturnCode.RETURN_CODE_403.getCode(), "用户未激活");
         }
-        //封装userid的信息到token里
-        String jwt = JwtUtil.createJWT(user.getId().toString());
-
-        map.put("result", "success");
-        map.put("error_massage", "get token success");
-        map.put("token", jwt);
-        return map;
-
     }
 }

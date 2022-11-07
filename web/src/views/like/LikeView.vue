@@ -9,7 +9,8 @@ import CardViewVue from '@/components/CardView.vue';
 export default {
     components: {
         CardViewVue
-    }
+    },
+
 }
 </script>
 

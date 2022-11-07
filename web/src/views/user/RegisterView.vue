@@ -37,7 +37,7 @@
                             {{ error_message }}
                         </template>
                     </Alert>
-                    <Button @click="register" type="primary" style=" width: 49%;" size="large">激活</Button>
+                    <Button @click="handle_register" type="primary" style=" width: 49%;" size="large">激活</Button>
                     <Button @click="reset" style="margin-left: 2%; width: 49%;" size="large">重置</Button>
                 </FormItem>
             </Form>
@@ -47,10 +47,11 @@
 
 <script>
 import CardViewVue from '@/components/CardView.vue';
-import { Col } from 'view-ui-plus';
+import { Col, Message, } from 'view-ui-plus';
 import { ref } from 'vue';
-import router from '@/router/index';
-import $ from 'jquery'
+import { register_api } from '@/request/api';
+import router from '@/router';
+
 export default {
     components: {
         CardViewVue,
@@ -76,12 +77,10 @@ export default {
             const phone_rule = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/g;
             return (phone.match(phone_rule) !== null)
         }
-        const register = () => {
+        const handle_register = () => {
             // console.log(check_phone(phone.value))
             error_message.value = "";
-            if (!check_phone(phone.value)) {
-                error_message.value = "手机格式不正确";
-            }
+
             if (sno.value.length !== 9) {
                 error_message.value = "学号格式不正确";
             } else if (password.value.length === 0) {
@@ -93,29 +92,56 @@ export default {
             } else if (parseInt(enter_captcha.value) !== parseInt(captcha.value)) {
                 error_message.value = "验证码不正确";
             } else {
-                $.ajax({
-                    url: "http://localhost:3030/api/user/register/",
-                    type: 'post',
-                    data: {
-                        sno: sno.value,
-                        password: password.value,
-                        confirmPwd: password_check.value,
-                        phone: phone.value
-                    },
-                    success(resp) {
-                        if (resp.code != 1000) {
-                            error_message.value = "发生未知错误";
-                        } else if (resp.data.result !== 'success') {
-                            error_message.value = resp.data.error_message
-                        } else {
-                            // error_message.value = "激活成功";
-                            router.push({ name: "login_index" })
-                        }
-                    },
-                    error(resp) {
-                        console.log(resp)
-                    }
+
+                register_api({
+                    sno: sno.value,
+                    password: password.value,
+                    confirmPwd: password_check.value,
+                    phone: phone.value
                 })
+                    .then(function (response) {
+                        if (response.code == 200) {
+                            router.push({ name: "login_index" })
+                            Message.info('激活成功');
+                        } else {
+                            Message.info(response.message);
+                            error_message.value = response.message;
+                        }
+                    })
+                    .catch(function (error) {
+                        Message.info('出现未知错误,请重试');
+                        error_message.value = error.message;
+                    })
+
+                // post("/api/user/register/", {
+                //     sno: sno.value,
+                //     password: password.value,
+                //     confirmPwd: password_check.value,
+                //     phone: phone.value
+                // })
+
+                // $.ajax({
+                //     url: "http://localhost:3030/api/user/register/",
+                //     type: 'post',
+                //     data: {
+                //         sno: sno.value,
+                //         password: password.value,
+                //         confirmPwd: password_check.value,
+                //         phone: phone.value
+                //     },
+                //     success(resp) {
+                //         console.log(resp)
+                //         if (resp.code == 200) {
+                //             router.push({ name: "login_index" })
+                //         } else {
+                //             error_message.value = resp.message;
+                //         }
+                //     },
+                //     error(resp) {
+                //         console.log(resp)
+                //         error_message.value = resp.message;
+                //     }
+                // })
             }
 
         }
@@ -130,7 +156,7 @@ export default {
             sno, password, phone, password_check, captcha,
             enter_captcha,
             error_message,
-            register,
+            handle_register,
             get_new_captcha,
             reset
         }
