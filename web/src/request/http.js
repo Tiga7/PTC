@@ -132,3 +132,37 @@ export function post(url, data) {
 			});
 	});
 }
+
+export function put_api(url, data) {
+	return new Promise((resolve, reject) => {
+		axios({
+			method: "put",
+			url: url,
+			data: qs.stringify(data),
+			headers: { "Content-Type": "application/x-www-form-urlencoded" },
+		})
+			.then((res) => {
+				resolve(res.data);
+			})
+			.catch((err) => {
+				reject(err.data);
+			});
+	});
+}
+
+export function delete_api(url, data) {
+	return new Promise((resolve, reject) => {
+		axios({
+			method: "delete",
+			url: url,
+			data: qs.stringify(data),
+			headers: { "Content-Type": "application/x-www-form-urlencoded" },
+		})
+			.then((res) => {
+				resolve(res.data);
+			})
+			.catch((err) => {
+				reject(err.data);
+			});
+	});
+}

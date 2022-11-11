@@ -41,7 +41,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-        token = token.substring(7);
+        token = token.substring("Bearer ".length());
 
         String userid;
         try {

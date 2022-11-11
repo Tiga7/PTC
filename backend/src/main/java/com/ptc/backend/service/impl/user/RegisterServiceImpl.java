@@ -1,4 +1,4 @@
-package com.ptc.backend.service.impl;
+package com.ptc.backend.service.impl.user;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -30,7 +30,6 @@ public class RegisterServiceImpl implements RegisterService {
                                        String confirmPwd,
                                        String phone) {
         Map<String, String> data = new HashMap<>();
-
 
         QueryWrapper<OrdinaryUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("sno", sno);

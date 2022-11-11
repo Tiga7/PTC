@@ -1,4 +1,4 @@
-package com.ptc.backend.service.impl;
+package com.ptc.backend.service.impl.user;
 
 import com.ptc.backend.config.filters.JwtUtil;
 import com.ptc.backend.pojo.OrdinaryUser;
@@ -34,10 +34,9 @@ public class LoginServiceImpl implements LoginService {
 
         //从数据库中获取username对应的用户并进行比对
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
-
         UserDetailsImpl loginUser = (UserDetailsImpl) authenticate.getPrincipal();
-
         OrdinaryUser user = loginUser.getUser();
+
 
         final LocalDateTime baseTime = LocalDateTime.of(2022, 11, 1, 0, 0, 0);
 

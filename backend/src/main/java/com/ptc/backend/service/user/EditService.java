@@ -1,7 +1,9 @@
 package com.ptc.backend.service.user;
 
+import com.ptc.backend.utils.ResultData;
+
 import java.util.Map;
 
 public interface EditService {
-    Map<String, String> editUser(String sno, String password);
+    ResultData<String> editUser(String username,String gender, String password, String newPassword);
 }

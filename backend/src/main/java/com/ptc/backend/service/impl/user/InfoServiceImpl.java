@@ -1,6 +1,7 @@
-package com.ptc.backend.service.impl;
+package com.ptc.backend.service.impl.user;
 
 import com.ptc.backend.pojo.OrdinaryUser;
+import com.ptc.backend.service.impl.userutils.GetLoginUser;
 import com.ptc.backend.service.impl.userutils.UserDetailsImpl;
 import com.ptc.backend.service.user.InfoService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +21,7 @@ public class InfoServiceImpl implements InfoService {
 
         OrdinaryUser user = loginUser.getUser();
 
+//        OrdinaryUser user = GetLoginUser.getUser();
         user.setPassword("");
         return user;
     }

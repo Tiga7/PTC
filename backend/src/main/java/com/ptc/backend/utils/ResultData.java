@@ -1,6 +1,7 @@
 package com.ptc.backend.utils;
 
 import lombok.Data;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
@@ -15,10 +16,10 @@ public class ResultData<T> {
     private Integer code;
     private String message;
     private T data;
-    private LocalDateTime time;
+    private LocalDateTime timeStamp;
 
     public ResultData() {
-        this.time = LocalDateTime.now();
+        this.timeStamp = LocalDateTime.now();
     }
 
     public static <T> ResultData<T> success(T data) {

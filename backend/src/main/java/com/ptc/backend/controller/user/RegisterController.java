@@ -23,7 +23,6 @@ public class RegisterController {
         String password = data.get("password");
         String confirmPwd = data.get("confirmPwd");
         String phone = data.get("phone");
-
         if (sno == null || sno.length() != 9) {
             return ResultData.fail(ReturnCode.FAIL.getCode(), "学号长度不正确");
         }
@@ -36,7 +35,8 @@ public class RegisterController {
         if (phone == null || phone.length() == 0) {
             return ResultData.fail(ReturnCode.FAIL.getCode(), "手机号不能为空");
         }
-        return registerService.register(sno, password,confirmPwd,phone);
+
+        return registerService.register(sno, password, confirmPwd, phone);
     }
 
 }
