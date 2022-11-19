@@ -1,4 +1,4 @@
-package com.ptc.backend.utils;
+package com.ptc.backend.controller.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

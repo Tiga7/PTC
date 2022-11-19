@@ -15,6 +15,6 @@ public class Schedule {
     private Integer id;
     private Integer roomId;
     private Integer classTime;
-    private LocalDate data;
+    private LocalDate date;
     private String lessonName;
 }

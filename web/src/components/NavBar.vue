@@ -13,26 +13,28 @@
             <Icon type="ios-paper" />
             收藏
             </MenuItem>
-            <MenuItem name="2" to="/comment/">
+            <MenuItem name="2" :to="{ name: 'comment_index', params: { record_id: 0 } }">
             <Icon type="ios-people" />
             评论
             </MenuItem>
-            <MenuItem name="3" to="/like/">
+
+            <MenuItem name="3" :to="{ name: 'like_index' }">
             <Icon type="ios-stats" />
             点赞
             </MenuItem>
+
             <MenuItem name="4" to="/record/">
             <Icon type="ios-stats" />
-            打卡记录
+            交流社区
             </MenuItem>
             <MenuItem name="5" to="/room/">
             <Icon type="ios-stats" />
             自习室
             </MenuItem>
-            <Submenu name="2" style="float: right;" v-if="$store.state.user.sno !== ''">
+            <Submenu name="2" style="float: right;" v-if="$store.state.user.username !== ''">
                 <template #title>
                     <Icon type="md-person" />
-                    {{ $store.state.user.sno }}
+                    {{ $store.state.user.username }}
                 </template>
                 <MenuItem name="2-3" to="/user/info/">个人信息</MenuItem>
                 <MenuItem name="2-4" @click="logout">退出</MenuItem>

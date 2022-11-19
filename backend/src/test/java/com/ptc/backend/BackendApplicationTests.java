@@ -3,11 +3,9 @@ package com.ptc.backend;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class BackendApplicationTests {
@@ -15,7 +13,7 @@ class BackendApplicationTests {
     @Test
     void contextLoads() {
 
-
+        System.out.println(LocalDateTime.now());
     }
 
 }

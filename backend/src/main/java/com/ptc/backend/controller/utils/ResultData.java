@@ -1,7 +1,6 @@
-package com.ptc.backend.utils;
+package com.ptc.backend.controller.utils;
 
 import lombok.Data;
-import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 

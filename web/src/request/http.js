@@ -4,16 +4,15 @@ import router from "@/router/index";
 import { Message } from "view-ui-plus";
 
 axios.defaults.baseURL = "http://localhost:3030";
-axios.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded;charset=UTF-8";
+// axios.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded;charset=UTF-8";
 axios.defaults.timeout = 5000;
 
-//请求拦截器
+//请求全局拦截器
 axios.interceptors.request.use(
 	(config) => {
 		// 每次发送请求之前判断 vuex 中是否存在 token
 		// 如果存在，则统一在 http 请求的 header 都加上 token，这样后台根据 token 判断你的登录情况
 		// 即使本地存在 token，也有可能 token 是过期的，所以在响应拦截器中要对返回状态进行判断
-
 		if (localStorage.getItem("jwt_token") != null) {
 			const token = "Bearer " + localStorage.getItem("jwt_token");
 			token && (config.headers.Authorization = token);

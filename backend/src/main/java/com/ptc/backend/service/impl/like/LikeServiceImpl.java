@@ -8,7 +8,7 @@ import com.ptc.backend.pojo.Like;
 import com.ptc.backend.pojo.OrdinaryUser;
 import com.ptc.backend.service.impl.userutils.UserDetailsImpl;
 import com.ptc.backend.service.like.LikeService;
-import com.ptc.backend.utils.ResultData;
+import com.ptc.backend.controller.utils.ResultData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +19,7 @@ public class LikeServiceImpl extends ServiceImpl<LikeMapper, Like> implements Li
 
     @Autowired
     private LikeMapper likeMapper;
+
 
     @Override
     public ResultData<String> changeLike(Integer recordId) {
@@ -48,6 +49,13 @@ public class LikeServiceImpl extends ServiceImpl<LikeMapper, Like> implements Li
         }
         return ResultData.success(null);
 
+    }
+
+    @Override
+    public Long likeCount(Integer recordId) {
+        QueryWrapper<Like> qw = new QueryWrapper<>();
+        qw.eq("id",recordId);
+        return likeMapper.selectCount(qw);
     }
 
 }

@@ -61,9 +61,11 @@
 // @ is an alias to /src
 import CardViewVue from '@/components/CardView.vue';
 import { reactive, ref } from 'vue';
-import { record_addrecord_api } from "@/request/api"
+import api from "@/request/api"
+
 import { useStore } from 'vuex';
 import { Message } from 'view-ui-plus';
+import router from '@/router';
 export default {
     components: {
         CardViewVue
@@ -138,21 +140,29 @@ export default {
             //     .catch((error) => {
             //         console.log(error)
             //     })
-            if (!rooms.value) rooms.value = 0;
-            record_addrecord_api({
-                user_id: store.state.user.id,
-                room_id: rooms.value,
-                description: description
-            })
-                .then((response) => {
-                    if (response.code === 200) {
-                        Message.info(response.data)
-                    }
-                    console.log(response);
+            if (store.state.user.is_login !== true) {
+                Message.info("请先登录再进行打卡操作");
+                setTimeout(() => {
+                    router.push({ name: "login_index" })
+                }, 1000);
+            } else {
+                if (!rooms.value) rooms.value = 0;
+                api.record_add({
+                    user_id: store.state.user.id,
+                    room_id: rooms.value,
+                    description: description
                 })
-                .catch((error) => {
-                    console.log(error)
-                })
+                    .then((response) => {
+                        if (response.code === 200) {
+                            Message.info(response.data)
+                        }
+                        console.log(response);
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+            }
+
 
 
         }

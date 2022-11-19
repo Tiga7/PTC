@@ -1,8 +1,7 @@
 package com.ptc.backend.controller.user;
 
-import com.ptc.backend.pojo.OrdinaryUser;
 import com.ptc.backend.service.user.LoginService;
-import com.ptc.backend.utils.ResultData;
+import com.ptc.backend.controller.utils.ResultData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -10,7 +10,9 @@ const routes = [
 		component: HomeView,
 		//额外的信息  可以存放一些授权信息
 		meta: {
+			//是否为admin
 			is_admin: false,
+			//是否登录
 			requestAuth: false,
 		},
 	},
@@ -63,7 +65,16 @@ const routes = [
 		},
 	},
 	{
-		path: "/comment/",
+		path: "/record/",
+		name: "record_index",
+		component: () => import("../views/record/RecordList.vue"),
+		meta: {
+			is_admin: false,
+			requestAuth: true,
+		},
+	},
+	{
+		path: "/comment/:record_id/",
 		name: "comment_index",
 		component: () => import("../views/comment/CommentView.vue"),
 		meta: {
@@ -77,16 +88,7 @@ const routes = [
 		component: () => import("../views/like/LikeView.vue"),
 		meta: {
 			is_admin: false,
-			requestAuth: true,
-		},
-	},
-	{
-		path: "/record/",
-		name: "record_index",
-		component: () => import("../views/record/RecordView.vue"),
-		meta: {
-			is_admin: false,
-			requestAuth: true,
+			requestAuth: false,
 		},
 	},
 	{
@@ -102,10 +104,6 @@ const routes = [
 		path: "/404/",
 		name: "404",
 		component: () => import("../views/error/ErrorView.vue"),
-		meta: {
-			is_admin: false,
-			requestAuth: false,
-		},
 	},
 	{
 		path: "/:catchAll(.*)",

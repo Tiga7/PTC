@@ -4,18 +4,15 @@ package com.ptc.backend.service.impl.user;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.ptc.backend.mapper.UserMapper;
 import com.ptc.backend.pojo.OrdinaryUser;
-import com.ptc.backend.service.impl.userutils.GetLoginUser;
 import com.ptc.backend.service.impl.userutils.UserDetailsImpl;
 import com.ptc.backend.service.user.EditService;
-import com.ptc.backend.utils.ResultData;
-import com.ptc.backend.utils.ReturnCode;
+import com.ptc.backend.controller.utils.ResultData;
+import com.ptc.backend.controller.utils.ReturnCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Service
 public class EditServiceImpl implements EditService {

@@ -1,5 +1,6 @@
 package com.ptc.backend.controller.record;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ptc.backend.pojo.Record;
 import com.ptc.backend.service.record.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,14 @@ public class RecordController {
     @Autowired
     private RecordService recordService;
 
-    @GetMapping
-    public List<Record> getRecordList() {
-        return recordService.getList();
+    @PostMapping("list")
+    public JSONObject getRecordList(@RequestParam Map<String, String> data) {
+        Integer page = Integer.parseInt(data.get("page"));
+        Integer size = Integer.parseInt(data.get("size"));
+        return recordService.getList(page, size);
     }
 
-    @PostMapping
+    @PostMapping("add")
     public String addRecord(@RequestParam Map<String, String> data) {
 
         Integer userId = Integer.parseInt(data.get("user_id"));

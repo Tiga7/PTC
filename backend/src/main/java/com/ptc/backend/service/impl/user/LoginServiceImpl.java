@@ -4,8 +4,8 @@ import com.ptc.backend.config.filters.JwtUtil;
 import com.ptc.backend.pojo.OrdinaryUser;
 import com.ptc.backend.service.impl.userutils.UserDetailsImpl;
 import com.ptc.backend.service.user.LoginService;
-import com.ptc.backend.utils.ResultData;
-import com.ptc.backend.utils.ReturnCode;
+import com.ptc.backend.controller.utils.ResultData;
+import com.ptc.backend.controller.utils.ReturnCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Stack;
 
 @Component
 @Service

@@ -1,9 +1,7 @@
 package com.ptc.backend.controller.like;
 
-import com.ptc.backend.pojo.Like;
 import com.ptc.backend.service.like.LikeService;
-import com.ptc.backend.utils.ResultData;
-import com.ptc.backend.utils.ReturnCode;
+import com.ptc.backend.controller.utils.ResultData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +19,6 @@ public class LikeController {
     @PostMapping("/api/like/add/")
     public ResultData<String> addLike(@RequestParam Map<String, String> data, Principal principal) {
         int recordId = Integer.parseInt(data.get("record_id"));
-
 
         return likeService.changeLike(recordId);
     }

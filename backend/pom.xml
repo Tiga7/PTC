@@ -94,11 +94,25 @@
         </dependency>
 
 
-        <!--swagger -->
+        <!--swagger 暂时用不到-->
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-boot-starter</artifactId>
             <version>3.0.0</version>
+        </dependency>
+
+        <!--mapStruct依赖 高性能对象映射-->
+        <!--mapstruct核心-->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>1.5.0.Beta1</version>
+        </dependency>
+        <!--mapstruct编译-->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>1.5.0.Beta1</version>
         </dependency>
 
     </dependencies>
