@@ -21,11 +21,14 @@ import java.util.Map;
 @Service
 public class LoginServiceImpl implements LoginService {
 
+    private static final LocalDateTime baseTime =
+            LocalDateTime.of(2022, 11, 1, 0, 0, 0);
+
     @Autowired
     private AuthenticationManager authenticationManager;
 
     @Override
-    public ResultData<Map<String,String>> getToken(String sno, String password) {
+    public ResultData<Map<String, String>> getToken(String sno, String password) {
 
         //将username password 转成密文
         UsernamePasswordAuthenticationToken authenticationToken =
@@ -37,13 +40,11 @@ public class LoginServiceImpl implements LoginService {
         OrdinaryUser user = loginUser.getUser();
 
 
-        final LocalDateTime baseTime = LocalDateTime.of(2022, 11, 1, 0, 0, 0);
-
         if (user.getModifyTime().isAfter(baseTime)) {
             //封装userid的信息到token里
             String jwt = JwtUtil.createJWT(user.getId().toString());
             Map<String, String> data = new HashMap<>();
-            data.put("token",jwt);
+            data.put("token", jwt);
             return ResultData.success(data);
         } else {
             return ResultData.fail(ReturnCode.RETURN_CODE_403.getCode(), "用户未激活");

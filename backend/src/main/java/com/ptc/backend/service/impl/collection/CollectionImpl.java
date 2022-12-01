@@ -12,7 +12,9 @@ import com.ptc.backend.pojo.Room;
 import com.ptc.backend.service.Po2Vo;
 import com.ptc.backend.service.collection.CollectionService;
 import com.ptc.backend.service.impl.userutils.UserDetailsImpl;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -57,8 +59,11 @@ public class CollectionImpl implements CollectionService {
             Room room = roomMapper.selectOne(qwForRoom);
             if (room == null) continue;
             CollectionVo collectionVo1 = Po2Vo.INSTANCE.collectionAndRoom2Vo(collection, room);
-//            collectionVo.putValue(collection, room);
-//            collectionVos.add(collectionVo);
+
+
+//            Po2Vo mapper = Mappers.getMapper(Po2Vo.class);
+//            CollectionVo collectionVo = mapper.toVo(new Collection());
+
             collectionVos.add(Po2Vo.INSTANCE.collectionAndRoom2Vo(collection, room));
         }
         JSONObject jsonObject = new JSONObject();
@@ -87,6 +92,7 @@ public class CollectionImpl implements CollectionService {
     @Override
     public String removeCollection(Integer collectionId) {
         collectionMapper.deleteById(collectionId);
+
         return "success";
     }
 }

@@ -4,12 +4,11 @@ import com.ptc.backend.pojo.*;
 import com.ptc.backend.service.impl.collection.CollectionVo;
 import com.ptc.backend.service.impl.comment.CommentVo;
 import com.ptc.backend.service.impl.record.RecordVo;
-import org.apache.catalina.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Mapper
 public interface Po2Vo {
@@ -21,7 +20,9 @@ public interface Po2Vo {
      * @param collection
      * @return
      */
-    CollectionVo toVo(Collection collection);
+//    CollectionVo toVo(Collection collection);
+
+//    List<CollectionVo> toVo(List<Collection> collections);
 
     /**
      * @param collection
@@ -38,7 +39,6 @@ public interface Po2Vo {
     CollectionVo collectionAndRoom2Vo(Collection collection, Room room);
 
     /**
-     *
      * @param record
      * @param user
      * @return
@@ -52,7 +52,7 @@ public interface Po2Vo {
     @Mapping(target = "photo", source = "user.photo")
     @Mapping(target = "buildingName", source = "room.buildingName")
     @Mapping(target = "roomName", source = "room.roomName")
-    RecordVo recordAndUser2Vo(Record record, OrdinaryUser user,Room room);
+    RecordVo recordAndUser2Vo(Record record, OrdinaryUser user, Room room);
 
     @Mapping(target = "id", source = "comment.id")
     @Mapping(target = "userId", source = "comment.userId")
@@ -61,6 +61,6 @@ public interface Po2Vo {
     @Mapping(target = "modifyTime", source = "comment.modifyTime")
     @Mapping(target = "username", source = "user.username")
     @Mapping(target = "photo", source = "user.photo")
-    CommentVo commentAndUser2Vo(Comment comment , OrdinaryUser user);
+    CommentVo commentAndUser2Vo(Comment comment, OrdinaryUser user);
 
 }

@@ -37,14 +37,13 @@ export default {
         const error_message = ref('');
         let captcha = ref("");
         const get_new_captcha = () => {
-            captcha.value = 111111;
-            // captcha.value = Math.floor(Math.random() * (999999 - 100000)) + 100000;
+            // captcha.value = 111111;
+            captcha.value = Math.floor(Math.random() * (999999 - 100000)) + 100000;
         }
         get_new_captcha()
 
-
-
         const login = (valid, { sno, password, enter_captcha }) => {
+
 
             if (parseInt(enter_captcha) === parseInt(captcha.value)) {
                 error_message.value = '';

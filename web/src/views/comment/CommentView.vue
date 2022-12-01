@@ -150,12 +150,10 @@ export default {
                     comment: comment.value,
                 })
                     .then(response => {
-                        console.log(response)
                         if (response.code == 200) {
                             Message.info("评论成功");
                             comment.value = ""
                             get_comment_list(1);
-
                         }
                     })
                     .catch(error => {
@@ -168,7 +166,6 @@ export default {
             api.comment_remove({
                 id: item.id
             }).then(response => {
-                console.log(response)
                 if (response.code == 200) {
                     Message.info("删除评论成功");
                     get_comment_list(1);

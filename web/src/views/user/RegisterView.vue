@@ -3,7 +3,7 @@
         <div class="demo-login">
             <Form>
                 <FormItem>
-                    <Input v-model="sno" prefix="ios-contact-outline" placeholder="学号" maxlength="9" type="text"
+                    <Input v-model.trim="sno" prefix="ios-contact-outline" placeholder="学号" maxlength="9" type="text"
                         size="large" clearable></Input>
                 </FormItem>
                 <FormItem>
@@ -68,8 +68,8 @@ export default {
         const error_message = ref('');
 
         const get_new_captcha = () => {
-            // captcha.value = Math.floor(Math.random() * (999999 - 100000)) + 100000;
-            captcha.value = 111111;
+            captcha.value = Math.floor(Math.random() * (999999 - 100000)) + 100000;
+            // captcha.value = 111111;
         }
         get_new_captcha()
 
@@ -113,35 +113,6 @@ export default {
                         error_message.value = error.message;
                     })
 
-                // post("/api/user/register/", {
-                //     sno: sno.value,
-                //     password: password.value,
-                //     confirmPwd: password_check.value,
-                //     phone: phone.value
-                // })
-
-                // $.ajax({
-                //     url: "http://localhost:3030/api/user/register/",
-                //     type: 'post',
-                //     data: {
-                //         sno: sno.value,
-                //         password: password.value,
-                //         confirmPwd: password_check.value,
-                //         phone: phone.value
-                //     },
-                //     success(resp) {
-                //         console.log(resp)
-                //         if (resp.code == 200) {
-                //             router.push({ name: "login_index" })
-                //         } else {
-                //             error_message.value = resp.message;
-                //         }
-                //     },
-                //     error(resp) {
-                //         console.log(resp)
-                //         error_message.value = resp.message;
-                //     }
-                // })
             }
 
         }
@@ -152,13 +123,14 @@ export default {
             password_check.value = '';
             error_message.value = '';
         }
+
         return {
             sno, password, phone, password_check, captcha,
             enter_captcha,
             error_message,
             handle_register,
             get_new_captcha,
-            reset
+            reset,
         }
     }
 }

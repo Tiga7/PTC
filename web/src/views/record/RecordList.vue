@@ -5,7 +5,7 @@
             </Col>
             <Col span="18">
             <List item-layout="vertical" size="large">
-                <ListItem v-for="item in data" :key="item.id">
+                <ListItem v-for="item in record_list" :key="item.id">
                     <Row>
                         <Col span="2">
                         <div class="user-info">
@@ -15,23 +15,30 @@
                         <Col span="20" offser="1">
                         <div class="user-name"> {{ item.username }}</div>
                         <ListItemMeta
-                            :description="'发表于:' + item.modifyTime + ' ' + (item.roomName == null ? '' : item.roomName)" />
+                            :description="'发表于:' + item.modifyTime + ' ' + (item.roomName == null ? '' : '自习室:' + item.roomName)" />
 
                         <div class="content" v-line-clamp="2">
                             {{ item.description }}
                         </div>
                         <!-- <Button size="small" :icon="status === 1 ? 'md-heart' : 'md-heart-outline'" type="text"
                             shape="circle"></Button> -->
-                        <a>
-                            <Icon :type="'md-heart-outline'" />{{ status }}
+                        <a @click="like_oprate(item)">
+                            <Icon :type="item.isLiked ? 'md-heart' : 'md-heart-outline'" />
+                            {{ item.likeCount }}
                         </a>
                         &nbsp;
-                        <a @click="turn_to_comment(item)">
-                            评论
+                        <a @click="turn_to_comment(item)" style="color: black;">
+                            评论 {{ item.commentCount }}
                         </a>
 
                         </Col>
                     </Row>
+                    <template #extra>
+                        <a style="color: black;" @click="remove(item)"
+                            v-if="$store.state.user.id == item.userId || $store.state.user.is_admin == true">
+                            删除
+                        </a>
+                    </template>
                 </ListItem>
             </List>
             </Col>
@@ -39,16 +46,10 @@
 
             </Col>
         </Row>
-
-        <div>
-            <Button type="primary" @click="get_list">Signin</Button>
-        </div>
-        <div>
-            <!-- <Table border :columns="columns" :data="list"></Table> -->
-        </div>
         <div style="text-align: center;">
-            <!-- <Page :total=page.size :model-value=page.current @on-change="get_page" /> -->
+            <Page :total=page.total_count :page-size="page.size" @on-change="get_list" />
         </div>
+
     </CardViewVue>
 </template>
 
@@ -57,42 +58,39 @@ import CardViewVue from '@/components/CardView.vue';
 import api from '@/request/api';
 import router from '@/router';
 import store from '@/store';
+import { Message } from 'view-ui-plus';
 import { reactive } from 'vue';
+
 export default {
     components: {
         CardViewVue,
-
     },
     setup() {
-        const data = reactive([]);
-
         const page = reactive(
             {
-                size: 1,
                 current: 1,
+                size: 10,
+                total_count: 1,
             }
         )
-        let list = reactive([])
-        const get_list = () => {
-            list.length = 0;
+        let record_list = reactive([])
+        const get_list = (valid) => {
+            page.current = valid
+            record_list.length = 0;
             api.record_getlist({
-                page: 1,
-                size: 20,
+                page: page.current,
+                size: page.size,
+                user_id: store.state.user.id,
             })
                 .then((response) => {
-                    console.log(response)
-                    data.push(...response.data.records);
-                    // page.size = response.data.total_count
-                    // list.push(...response.data.records)
+                    record_list.push(...response.data.records);
+                    page.total_count = response.data.total_count
                 }).catch((error) => {
                     console.log(error)
                 })
         }
-        get_list();
-        const get_page = (valid) => {
-            page.current = valid
-            // console.log(valid);
-        }
+        get_list(1);
+
         const turn_to_comment = (item) => {
             store.commit('updateRecord', item);
             router.push({
@@ -100,18 +98,66 @@ export default {
                 params: {
                     record_id: item.id
                 },
-                data: item,
+                record_list: item,
             })
-            console.log(item)
+            // console.log(item)
+        }
+
+        const like_oprate = (item) => {
+            if (item.isLiked) {
+                item.isLiked = false;
+                item.likeCount--;
+                api.like_opreate({
+                    record_id: item.id,
+                })
+                    .then(resp => {
+                        if (resp.message == 'success') {
+                            Message.info("取消点赞");
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
+            } else {
+                item.isLiked = true;
+                item.likeCount++;
+                api.like_opreate({
+                    record_id: item.id,
+                })
+                    .then(resp => {
+                        if (resp.message == 'success') {
+                            Message.info("点赞成功");
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
+            }
+        }
+        const remove = (item) => {
+            api.record_remove({
+                id: item.id,
+            })
+                .then(resp => {
+                    if (resp.code == 200) {
+                        Message.info(resp.message);
+                        get_list(1);
+                    }
+                })
+                .catch(error => {
+                    Message.info(error.message);
+                    get_list(1);
+
+                })
         }
         return {
-            data,
-            list,
+            record_list,
             get_list,
             page,
-            get_page,
             status: 1,
-            turn_to_comment
+            turn_to_comment,
+            like_oprate,
+            remove
         }
     }
 }

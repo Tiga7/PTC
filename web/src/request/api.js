@@ -30,10 +30,19 @@ export default {
 	// 	return request.post("/api/user/token/", data);
 	// },
 	//......
+	edit_info: (data) => {
+		return request.post("/api/user/edit/", data);
+	},
+
 	record_getlist: (data) => {
 		return request.post("/api/record/list/", data);
 	},
-
+	record_add: (data) => {
+		return request.post("/api/record/add/", data);
+	},
+	record_remove: (data) => {
+		return request.delete("/api/record/", data);
+	},
 	comment_get_list: (data) => {
 		return request.post("/api/comment/list/", data);
 	},
@@ -42,5 +51,14 @@ export default {
 	},
 	comment_remove: (data) => {
 		return request.delete("/api/comment", data);
+	},
+	like_opreate: (data) => {
+		return request.post("/api/like/add/", data);
+	},
+	room_simplelist: (data) => {
+		return request.post("/api/room/simple_list/", data);
+	},
+	test: (data) => {
+		return request.put("/api/like/test/", data);
 	},
 };

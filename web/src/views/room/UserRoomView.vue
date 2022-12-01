@@ -79,7 +79,7 @@ export default {
                 // width: 120,
             },
             {
-                title: '第几节有课',
+                title: '今天第几节有课',
                 key: 'classTime',
                 align: 'center',
                 // width: 120,
@@ -109,7 +109,6 @@ export default {
                     roomName: search_info.roomName,
                 })
                     .then(function (response) {
-                        console.log(response)
                         total_count.value = response.data.total_count
 
                         rooms.push(...response.data.schedules)
@@ -123,7 +122,6 @@ export default {
                     size: 10,
                 })
                     .then(function (response) {
-                        // console.log(response)
                         total_count.value = response.data.total_count
                         if (response.data.schedules.length == 0 && current_page.value > 1) {
                             current_page.value--;
@@ -147,11 +145,11 @@ export default {
         }
 
         const handle_collect = (row) => {
-            console.log(row);
             if (row.collectionId === -1) {
                 add_colletion_api({
                     room_id: row.id
                 }).then(function (response) {
+
                     if (response.code === 200) {
                         Message.info("收藏成功")
                         get_page(current_page.value)

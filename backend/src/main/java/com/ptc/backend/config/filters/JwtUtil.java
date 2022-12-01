@@ -59,6 +59,13 @@ public class JwtUtil {
         return new SecretKeySpec(encodeKey, 0, encodeKey.length, "HmacSHA256");
     }
 
+    /**
+     *
+     * 解析token获取数据
+     * @param jwt
+     * @return
+     * @throws Exception
+     */
     public static Claims parseJWT(String jwt) throws Exception {
         SecretKey secretKey = generalKey();
         return Jwts.parserBuilder()

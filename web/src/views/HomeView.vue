@@ -40,12 +40,15 @@
                     <Input v-model="value" placeholder="地址(选填)" style="width: 30vw" size="large" />
                 </div> -->
                 <div class="info-ptc">
-                    推荐自习室为:5301
+                    推荐自习室为:{{ room }}
                 </div>
                 <div class="info-ptc">
-                    <TreeSelect v-model="rooms.value" prefix="md-pin" :data="rooms" v-width="300" size="large"
-                        placeholder="地址(选填)">
-                    </TreeSelect>
+                    <Select v-model="room" filterable prefix="md-pin" v-width="300" size="large" placeholder="地址(选填)"
+                        on-open-change="get_room_list">
+                        <Option v-for="item in rooms" :value="item.id" :key="item.id">
+                            {{ item.buildingName }} {{ item.roomName }}
+                        </Option>
+                    </Select>
                 </div>
                 <div class="info-ptc">
                     <Button type="info" @click="handle_submit">开启今天的打卡之旅</Button>
@@ -62,10 +65,8 @@
 import CardViewVue from '@/components/CardView.vue';
 import { reactive, ref } from 'vue';
 import api from "@/request/api"
-
 import { useStore } from 'vuex';
 import { Message } from 'view-ui-plus';
-import router from '@/router';
 export default {
     components: {
         CardViewVue
@@ -73,7 +74,6 @@ export default {
 
     setup() {
         const store = useStore();
-
         let nowTime = ref(new Date().getTime());
         const get_time = () => {
             nowTime.value = new Date().getTime();
@@ -81,96 +81,60 @@ export default {
         setInterval(get_time, 1000);
 
         let description = ref("");
-        let rooms = reactive([
-            {
-                title: '五号楼',
-                expand: false,
-                value: '五号楼',
-                selected: false,
-                checked: false,
-                children: [
-                    {
-                        title: '5101',
-                        expand: true,
-                        value: '5101',
-                        selected: false,
-                        checked: false,
-                    },
-                    {
-                        title: '5102',
-                        expand: true,
-                        value: '5012',
-                        selected: false,
-                        checked: false,
-                    },
-                ]
-            },
-            {
-                title: '6号楼',
-                expand: false,
-                value: '6号楼',
-                selected: false,
-                checked: false,
-                children: [
-                    {
-                        title: '6101',
-                        expand: true,
-                        value: '6101',
-                        selected: false,
-                        checked: false,
-                    },
-                    {
-                        title: '6102',
-                        expand: true,
-                        value: '6012',
-                        selected: false,
-                        checked: false,
-                    },
-                ]
-            },
-        ])
+
+        let room = ref("5301")
+        let rooms = reactive([])
+        let num = Math.floor(Math.random() * (70));
+
+        const get_room_list = () => {
+            if (store.state.user.is_login == true) {
+                api.room_simplelist({
+                })
+                    .then(resp => {
+                        rooms.push(...resp.data)
+                        room.value = rooms.at(num).roomName
+                    }).catch(error => {
+                        console.log(error)
+                    })
+            }
+        }
+        get_room_list();
 
         const handle_submit = () => {
-            // record_getlist_api({
-            //     sno: store.state.user.sno
-            // })
-            //     .then((response) => {
-            //         console.log(response);
-            //     })
-            //     .catch((error) => {
-            //         console.log(error)
-            //     })
             if (store.state.user.is_login !== true) {
                 Message.info("请先登录再进行打卡操作");
-                setTimeout(() => {
-                    router.push({ name: "login_index" })
-                }, 1000);
+                // setTimeout(() => {
+                //     router.push({ name: "login_index" })
+                // }, 1000);
             } else {
-                if (!rooms.value) rooms.value = 0;
+                if (!room.value) room.value = 0;
+                if (description.value == '' || description.value.length == 0) {
+                    Message.info("打卡说点什么鼓励一下自己吧");
+                    return;
+                }
                 api.record_add({
                     user_id: store.state.user.id,
-                    room_id: rooms.value,
-                    description: description
+                    room_id: room.value,
+                    description: description.value
                 })
                     .then((response) => {
                         if (response.code === 200) {
                             Message.info(response.data)
                         }
-                        console.log(response);
                     })
                     .catch((error) => {
                         console.log(error)
                     })
             }
-
-
-
         }
         return {
             nowTime,
             description,
+            room,
             rooms,
-            handle_submit
+            handle_submit,
+            get_room_list,
+
         }
     }
 }

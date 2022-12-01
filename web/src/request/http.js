@@ -3,8 +3,10 @@ import qs from "qs"; // 引入 qs 模块，用来序列化 post 类型的数据�
 import router from "@/router/index";
 import { Message } from "view-ui-plus";
 
-axios.defaults.baseURL = "http://localhost:3030";
-// axios.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded;charset=UTF-8";
+// axios.defaults.baseURL = "http://localhost:3030";
+// axios.defaults.baseURL = "http://101.34.252.81";
+axios.defaults.baseURL = "";
+
 axios.defaults.timeout = 5000;
 
 //请求全局拦截器
@@ -36,12 +38,11 @@ axios.interceptors.response.use(
 		}
 	},
 	// 服务器状态码不是 2 开头的的情况
-	// 这里可以跟你们的后台开发人员协商好统一的错误状态码
 	// 然后根据返回的状态码进行一些操作，例如登录过期提示，错误提示等等
 	// 下面列举几个常见的操作，其他需求可自行扩展
 	(error) => {
-		if (error.response.status) {
-			switch (error.response.status) {
+		if (error.response.code) {
+			switch (error.response.code) {
 				// 401: 未登录
 				// 未登录则跳转登录页面，并携带当前页面的路径
 				// 在登录成功后返回当前页面，这一步需要在登录页操作。

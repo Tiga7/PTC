@@ -3,13 +3,17 @@ package com.ptc.backend.controller.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
+
+import javax.annotation.Resource;
 
 @RestControllerAdvice(basePackages = {"com.ptc.backend"})
 public class MyResponseAdvice implements ResponseBodyAdvice<Object> {
@@ -17,9 +21,8 @@ public class MyResponseAdvice implements ResponseBodyAdvice<Object> {
     /**
      * 有个一神奇的问题, 不能找到这个bean还是能正常运行
      */
-    @Autowired
+    @Resource
     private ObjectMapper objectMapper;
-
 
     @Override
     public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass) {

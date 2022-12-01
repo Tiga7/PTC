@@ -7,5 +7,5 @@ import com.ptc.backend.pojo.Record;
 public interface RecordService extends IService<Record> {
     String addRecord(Record record);
 
-    JSONObject getList(Integer page, Integer size);
+    JSONObject getList(Integer page, Integer size,Integer userId);
 }

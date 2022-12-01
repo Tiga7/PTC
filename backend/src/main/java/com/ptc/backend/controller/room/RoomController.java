@@ -2,6 +2,7 @@ package com.ptc.backend.controller.room;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.ptc.backend.mapper.RoomMapper;
 import com.ptc.backend.pojo.Room;
 import com.ptc.backend.service.room.RoomService;
 import com.ptc.backend.controller.utils.ResultData;
@@ -9,6 +10,7 @@ import com.ptc.backend.controller.utils.ReturnCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -26,12 +28,16 @@ public class RoomController {
         }
         String roomName = data.get("roomName");
         String buildingName = data.get("buildingName");
-        if (roomName != null || buildingName != null )
-        {
-            return ResultData.success(roomService.getSearchList(page,size,roomName,buildingName));
-        }else {
+        if (roomName != null || buildingName != null) {
+            return ResultData.success(roomService.getSearchList(page, size, roomName, buildingName));
+        } else {
             return ResultData.success(roomService.getList(page, size));
         }
+    }
+
+    @PostMapping("simple_list")
+    public List<Room> getSimpleList() {
+        return roomService.getSimpleList();
     }
 
     @PostMapping("schedule")
@@ -40,12 +46,12 @@ public class RoomController {
         Integer size = Integer.parseInt(data.get("size"));
         if (page == 0 || size == 0) {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("message","分页出错");
+            jsonObject.put("message", "分页出错");
             return jsonObject;
         }
         String roomName = data.get("roomName");
         String buildingName = data.get("buildingName");
-        return roomService.getRoomSchedule(page,size,roomName,buildingName);
+        return roomService.getRoomSchedule(page, size, roomName, buildingName);
     }
 
     @PostMapping
@@ -87,5 +93,12 @@ public class RoomController {
                 .roomName(roomName)
                 .capacity(capacity)
                 .build());
+    }
+
+    @GetMapping("/api/room/best/")
+    public String bestRoom() {
+
+        return roomService.getBest();
+
     }
 }

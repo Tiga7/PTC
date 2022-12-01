@@ -40,11 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 //放行外部的地址
-                .antMatchers("/api/user/token/", "/api/user/register/",
-                        "/swagger**/**",
-                        "/webjars/**",
-                        "/v3/**",
-                        "/doc.html").permitAll()
+                .antMatchers("/api/user/token/", "/api/user/register/").permitAll()
                 //放行本地地址 微服务访问
 //                .antMatchers("/pk/*").hasIpAddress("127.0.0.1")
                 .antMatchers(HttpMethod.OPTIONS).permitAll()

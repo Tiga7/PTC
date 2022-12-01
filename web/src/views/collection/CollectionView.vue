@@ -85,7 +85,6 @@ export default {
         get_page(current_page.value);
 
         const handle_collect = (row) => {
-            console.log(row);
             remove_colletion_api({
                 collection_id: row.id
             }).then(function (response) {

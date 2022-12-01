@@ -48,12 +48,12 @@ public class RegisterServiceImpl implements RegisterService {
             return ResultData.fail(ReturnCode.FAIL.getCode(), "该手机号已经被其他用户激活过");
         }
 
-        queryWrapper.clear();
-        OrdinaryUser user1 = userMapper.selectOne(queryWrapper.eq("sno", sno));
-        if (user1!=null && !user1.getPhone().equals(phone))
-        {
-            return ResultData.fail(ReturnCode.FAIL.getCode(), "更改手机号请联系管理员");
-        }
+//        queryWrapper.clear();
+//        OrdinaryUser user1 = userMapper.selectOne(queryWrapper.eq("sno", sno));
+//        if (user1!=null && !user1.getPhone().equals(phone))
+//        {
+//            return ResultData.fail(ReturnCode.FAIL.getCode(), "更改手机号请联系管理员");
+//        }
 
         selectOne.setModifyTime(LocalDateTime.now());
         selectOne.setUsername(sno);

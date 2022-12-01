@@ -13,9 +13,12 @@ import lombok.NoArgsConstructor;
 @TableName("table_like")
 public class Like {
 
-    @TableId(type = IdType.AUTO)//主键自增
+    @TableId(type = IdType.AUTO) //主键自增
     private Integer id;
+
     private Integer userId;
+
     private Integer recordId;
+
     private Integer status;
 }

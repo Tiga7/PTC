@@ -13,7 +13,6 @@
 import CardViewVue from '@/components/CardView.vue';
 import AdminRoomView from './AdminRoomView.vue';
 import UserRoomView from './UserRoomView.vue'
-
 export default {
     components: {
         CardViewVue,

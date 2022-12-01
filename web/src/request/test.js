@@ -3,7 +3,9 @@ import qs from "qs"; // 引入 qs 模块，用来序列化 post 类型的数据�
 import router from "@/router/index";
 import { Message } from "view-ui-plus";
 
-const baseURL = "http://localhost:3030";
+// const baseURL = "http://localhost:3030";
+// const baseURL = "http://101.34.252.81";
+const baseURL = "";
 
 //创造一个新的axios实例,然后再该实例中进行配置,以备在不同环境中使用
 const instance = axios.create({
@@ -40,11 +42,10 @@ instance.interceptors.response.use(
 		}
 	},
 	// 服务器状态码不是 2 开头的的情况
-	// 这里可以跟你们的后台开发人员协商好统一的错误状态码
 	// 然后根据返回的状态码进行一些操作，例如登录过期提示，错误提示等等
 	// 下面列举几个常见的操作，其他需求可自行扩展
 	(error) => {
-		if (error.response.status) {
+		if (error.response) {
 			switch (error.response.status) {
 				// 401: 未登录
 				// 未登录则跳转登录页面，并携带当前页面的路径
@@ -68,7 +69,7 @@ instance.interceptors.response.use(
 					Message.info("账户未激活或没有权限,即将跳到登录页面");
 
 					// 清除token
-					localStorage.removeItem("token");
+					localStorage.removeItem("jwt_token");
 
 					// 跳转登录页面，并将要浏览的页面fullPath传过去，登录成功后跳转需要访问的页面
 					setTimeout(() => {

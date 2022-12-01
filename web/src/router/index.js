@@ -83,9 +83,9 @@ const routes = [
 		},
 	},
 	{
-		path: "/like/",
-		name: "like_index",
-		component: () => import("../views/like/LikeView.vue"),
+		path: "/schedule/",
+		name: "shechule_index",
+		component: () => import("../views/schedule/ScheduleView.vue"),
 		meta: {
 			is_admin: false,
 			requestAuth: false,
@@ -97,7 +97,7 @@ const routes = [
 		component: () => import("../views/room/RoomView.vue"),
 		meta: {
 			is_admin: false,
-			requestAuth: false,
+			requestAuth: true,
 		},
 	},
 	{

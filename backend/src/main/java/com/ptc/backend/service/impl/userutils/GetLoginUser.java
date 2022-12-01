@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 public class GetLoginUser {
 
-    public  static OrdinaryUser getUser(){
+    public static OrdinaryUser getUser() {
         UsernamePasswordAuthenticationToken authenticationToken =
                 (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         //会进数据库查询

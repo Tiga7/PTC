@@ -45,6 +45,11 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public List<Room> getSimpleList() {
+        return roomMapper.selectList(null);
+    }
+
+    @Override
     public IPage<Room> getSearchList(Integer page, Integer size, String roomName, String buildingName) {
         IPage<Room> iPage = new Page<>(page, size);
         QueryWrapper<Room> queryWrapper = new QueryWrapper<>();
@@ -93,10 +98,10 @@ public class RoomServiceImpl implements RoomService {
 
         List<RoomSchedule> schedules = new ArrayList<>();
         for (Room room : records) {
-            Integer id = room.getId();
             qw.clear();
-            qw.eq("room_id", id).eq("date", LocalDate.now()).orderByAsc("class_time");
+            qw.eq("room_id", room.getId()).eq("date", LocalDate.now()).orderByAsc("class_time");
             List<Schedule> schedules1 = scheduleMapper.selectList(qw);
+
             List<Integer> classTime = new ArrayList<>();
             for (Schedule schedule : schedules1) {
                 classTime.add(schedule.getClassTime());
@@ -107,6 +112,9 @@ public class RoomServiceImpl implements RoomService {
             roomSchedule.setBuildingName(room.getBuildingName());
             roomSchedule.setRoomName(room.getRoomName());
             roomSchedule.setCapacity(room.getCapacity());
+            if (classTime.size() == 0) {
+                classTime.add(0);
+            }
             roomSchedule.setClassTime(classTime);
 
             qwForCollection.clear();
@@ -147,6 +155,12 @@ public class RoomServiceImpl implements RoomService {
     public String deleteRoom(Integer roomId) {
         roomMapper.deleteById(roomId);
         return "删除成功";
+    }
+
+    @Override
+    public String getBest() {
+        
+        return null;
     }
 }
 

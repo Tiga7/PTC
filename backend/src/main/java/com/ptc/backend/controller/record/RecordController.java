@@ -22,7 +22,8 @@ public class RecordController {
     public JSONObject getRecordList(@RequestParam Map<String, String> data) {
         Integer page = Integer.parseInt(data.get("page"));
         Integer size = Integer.parseInt(data.get("size"));
-        return recordService.getList(page, size);
+        Integer userId = Integer.parseInt(data.get("user_id"));
+        return recordService.getList(page, size, userId);
     }
 
     @PostMapping("add")
@@ -41,4 +42,17 @@ public class RecordController {
         );
     }
 
+    @DeleteMapping()
+    public String removeRecord(@RequestParam Map<String, String> data) {
+
+        Integer recordId = Integer.parseInt(data.get("id"));
+
+        boolean flag = recordService.removeById(recordId);
+        if (flag) {
+            return "删除成功";
+        } else {
+            return "删除失败";
+        }
+
+    }
 }

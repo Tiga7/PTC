@@ -9,28 +9,24 @@
             <Icon type="md-checkmark" />
             HOME
             </MenuItem>
-            <MenuItem name="1" to="/collection/">
-            <Icon type="ios-paper" />
-            收藏
-            </MenuItem>
-            <MenuItem name="2" :to="{ name: 'comment_index', params: { record_id: 0 } }">
-            <Icon type="ios-people" />
-            评论
-            </MenuItem>
-
-            <MenuItem name="3" :to="{ name: 'like_index' }">
-            <Icon type="ios-stats" />
-            点赞
-            </MenuItem>
-
             <MenuItem name="4" to="/record/">
             <Icon type="ios-stats" />
             交流社区
+            </MenuItem>
+            <MenuItem name="1" to="/collection/">
+            <Icon type="ios-paper" />
+            收藏
             </MenuItem>
             <MenuItem name="5" to="/room/">
             <Icon type="ios-stats" />
             自习室
             </MenuItem>
+
+            <MenuItem name="3" :to="{ name: 'shechule_index' }">
+            <Icon type="ios-stats" />
+            课表管理
+            </MenuItem>
+
             <Submenu name="2" style="float: right;" v-if="$store.state.user.username !== ''">
                 <template #title>
                     <Icon type="md-person" />
@@ -44,7 +40,7 @@
                     <Icon type="md-person" />用户管理
                 </template>
                 <MenuItem name="2-1" to="/user/login">登录</MenuItem>
-                <MenuItem name="2-2" to="/user/register">注册</MenuItem>
+                <MenuItem name="2-2" to="/user/register">激活</MenuItem>
 
             </Submenu>
         </Menu>
